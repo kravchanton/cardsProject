@@ -5,6 +5,7 @@ import {registrationReducer} from "./registrationReducer";
 import {recoveryReducer} from "./recovery-reducer";
 import {authReducer} from "./authReducer";
 import {profileReducer} from "./profileReducer";
+import {packsReducer} from "../../n2-features/f3-cards/packs/packsReducer";
 
 const reducers = combineReducers({
     testReducer: testReducer,
@@ -12,6 +13,7 @@ const reducers = combineReducers({
     recoveryPassword: recoveryReducer,
     auth: authReducer,
     profile: profileReducer,
+    packs: packsReducer
 
 })
 
