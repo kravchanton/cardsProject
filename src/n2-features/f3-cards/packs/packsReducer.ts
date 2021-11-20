@@ -1,7 +1,8 @@
-import {CardsType, packsAPI, PacksType} from "./packsApi";
+import {packsAPI, PacksTypeResponse} from "./packsApi";
 import {Dispatch} from "redux";
 import {InitialProfileType} from "../../../n1-main/m2-bll/profileReducer";
 import {setIsError} from "../../../n1-main/m2-bll/authReducer";
+import {AppStoreType} from "../../../n1-main/m2-bll/store";
 
 
 export let initialState: PacksType = {
@@ -11,6 +12,8 @@ export let initialState: PacksType = {
     minCardsCount: 0,
     page: 0,
     pageCount: 0,
+    packName: ''
+
 }
 
 
@@ -24,31 +27,40 @@ export const packsReducer = (state: PacksType = initialState, action: ActionsTyp
                 minCardsCount: action.minCardsCount,
                 page: action.page,
                 pageCount: action.pageCount
-
             }
+
+        case 'packs/SET-PACK-NAME':
+            return {...state, packName: action.packName}
         default:
             return {...state}
     }
 
 }
-export const setPacks = (data: PacksType) => {
+export const setPacks = (data: PacksTypeResponse) => {
     const {cardPacks, cardPacksTotalCount, maxCardsCount, minCardsCount, page, pageCount} = data
     return ({type: 'packs/SET-PACKS', cardPacks, cardPacksTotalCount, maxCardsCount, minCardsCount, page, pageCount} as const)
 }
 
+export const setPackNameForSearch = (packName: string) => {
+    return ({type: 'packs/SET-PACK-NAME', packName} as const)
+}
+
 export type SetPacksType = ReturnType<typeof setPacks>
-type ActionsType = SetPacksType
+export type SetPackNameForSearchType = ReturnType<typeof setPackNameForSearch>
+type ActionsType = SetPacksType | SetPackNameForSearchType
 
 export const getPacksTC = () => {
-    return(dispatch: Dispatch<ActionsType>) => {
-    packsAPI.getCards().then(res => {
+    return(dispatch: Dispatch<ActionsType>, getState: () => AppStoreType) => {
+        const state = getState()
+        let packName = state.packs.packName
+    packsAPI.getCards(packName).then(res => {
         dispatch(setPacks(res.data))
     })
 }
 }
 
 export const addPackTC = (name: string) => {
-    return (dispatch: Dispatch<any>) => {
+    return (dispatch: Dispatch<any>, getState: () => AppStoreType) => {
         packsAPI.postCards(name).then((res) =>
         {dispatch(getPacksTC())})
             .catch(e => {
@@ -59,3 +71,27 @@ export const addPackTC = (name: string) => {
     }
 }
 
+export type CardsType = {
+    _id: string
+    user_id: string
+    name: string
+    path: string
+    cardsCount: number
+    grade: number
+    shots: number
+    rating: number
+    type:  string
+    created:  string
+    updated:  string
+    __v: number
+}
+
+export type PacksType = {
+    cardPacks: CardsType[]
+    cardPacksTotalCount: number
+    maxCardsCount: number
+    minCardsCount: number
+    page: number
+    pageCount: number
+    packName: string
+}

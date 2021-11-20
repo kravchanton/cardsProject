@@ -1,9 +1,8 @@
 import s from './packs.module.scss'
 import {ChangeEvent, FormEvent, useEffect} from "react";
-import {getPacksTC} from "./packsReducer";
+import {getPacksTC, PacksType} from "./packsReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../n1-main/m2-bll/store";
-import {PacksType} from "./packsApi";
 
 export type PacksPropsType = {
     setName: (s: string) => void
@@ -40,7 +39,7 @@ let a;
         <div className={s.addPacks}>
             <form onSubmit={props.addPack}><input value={props.name} onChange={changeName}/> <button>Add new pack</button></form></div>
         <div className={s.tableContainer}>
-            <div><input value={props.packName} onChange={searchPackName}/></div>
+            <div><input type='search' placeholder='Search' value={props.packName} onChange={searchPackName}/></div>
             { cardPacks.map(t =>
             <div className={s.row}>
                 <div>{t.name}</div>

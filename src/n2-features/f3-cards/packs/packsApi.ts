@@ -10,8 +10,8 @@ const instance = axios.create({
 })
 
 export const packsAPI = {
-    getCards() {
-        return instance.get<PacksType>('/cards/pack')
+    getCards(packName: string) {
+        return instance.get<PacksTypeResponse>('/cards/pack', {params: {packName}} )
     },
     postCards(name: string) {
         return instance.post('/cards/pack', {cardsPack: {name}})
@@ -38,7 +38,7 @@ export type CardsType = {
     __v: number
 }
 
-export type PacksType = {
+export type PacksTypeResponse = {
     cardPacks: CardsType[]
     cardPacksTotalCount: number
     maxCardsCount: number
