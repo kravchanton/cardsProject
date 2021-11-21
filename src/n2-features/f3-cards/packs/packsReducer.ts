@@ -31,6 +31,8 @@ export const packsReducer = (state: PacksType = initialState, action: ActionsTyp
 
         case 'packs/SET-PACK-NAME':
             return {...state, packName: action.packName}
+        case 'packs/SET-PAGE':
+            return {...state, page: action.page}
         default:
             return {...state}
     }
@@ -44,16 +46,21 @@ export const setPacks = (data: PacksTypeResponse) => {
 export const setPackNameForSearch = (packName: string) => {
     return ({type: 'packs/SET-PACK-NAME', packName} as const)
 }
+export const setPageForPagination = (page: number) => {
+    return ({type: 'packs/SET-PAGE', page} as const)
+}
 
 export type SetPacksType = ReturnType<typeof setPacks>
 export type SetPackNameForSearchType = ReturnType<typeof setPackNameForSearch>
-type ActionsType = SetPacksType | SetPackNameForSearchType
+export type SetPageForPaginationType = ReturnType<typeof setPageForPagination>
+type ActionsType = SetPacksType | SetPackNameForSearchType | SetPageForPaginationType
 
 export const getPacksTC = () => {
     return(dispatch: Dispatch<ActionsType>, getState: () => AppStoreType) => {
         const state = getState()
         let packName = state.packs.packName
-    packsAPI.getCards(packName).then(res => {
+        let page = state.packs.page
+    packsAPI.getCards(packName, page).then(res => {
         dispatch(setPacks(res.data))
     })
 }

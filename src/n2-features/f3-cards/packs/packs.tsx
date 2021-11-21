@@ -1,5 +1,5 @@
 import s from './packs.module.scss'
-import {ChangeEvent, FormEvent, useEffect} from "react";
+import {ChangeEvent, FormEvent, MouseEventHandler, useEffect} from "react";
 import {getPacksTC, PacksType} from "./packsReducer";
 import {useDispatch, useSelector} from "react-redux";
 import {AppStoreType} from "../../../n1-main/m2-bll/store";
@@ -10,8 +10,9 @@ export type PacksPropsType = {
     addPack: (e: FormEvent<HTMLFormElement>) => void
     setPackName: (s: string) => void
     packName: string
+    setPage: (t: number) => void
 }
-export const Packs = (props: any) => {
+export const Packs = (props: PacksPropsType) => {
 
 const {cardPacks, cardPacksTotalCount, maxCardsCount, minCardsCount, page, pageCount} = useSelector<AppStoreType, PacksType>(state => state.packs)
     function isoDate(msSinceEpoch: string) {
@@ -19,15 +20,36 @@ const {cardPacks, cardPacksTotalCount, maxCardsCount, minCardsCount, page, pageC
         return d.getUTCFullYear() + '-' + (d.getUTCMonth() + 1) + '-' + d.getUTCDate() +  ' T ' +
             d.getUTCHours() + ':' + d.getUTCMinutes() + ':' + d.getUTCSeconds();
     }
+    function pagination (page: number, pagesCount: number) {
+        if(page === 1 && page+2 < pagesCount) {
+            return [page, ++page, ++page]
+        }
+        else if(page === 2 && page+2 < pagesCount) {
+            return [page-1, page, ++page, ++page]
+        }
+        else if(page > 2 && page+2 < pagesCount) {
+            return [page -2, page-1, page, ++page, ++page]
 
+        }
+        else if(page > 2 && page+2 ===  pagesCount) {
+            return [page -2, page-1, page, ++page, ++page]
+
+        }
+        else if(page > 2 && page+1 === pagesCount) {
+            return [page -2, page-1, page]
+
+        }
+        else if(page > 2 && page === pagesCount) {
+            return [page -2, page-1]
+
+        }
+        else {
+            return []
+
+        }
+    }
     let pagesCount = Math.ceil(cardPacksTotalCount / pageCount)
-    if(pagesCount > 40) {
-        pagesCount=40
-    }
-    let pages = []
-    for (let i = 1; i < pagesCount + 1; i++) {
-        pages.push(i)
-    }
+debugger
     const changeName = (e: ChangeEvent<HTMLInputElement>) => {
     props.setName(e.currentTarget.value)
     }
@@ -48,7 +70,7 @@ let a;
                 <div>{'Created by'}</div>
             </div>
             )}
-            <div className={s.pagination}> {pages.map(t => <span> {t} </span>)} <span>{pagesCount}</span></div>
+            <div className={s.pagination}> {pagination(page,pagesCount).map(t => <span onClick={() => props.setPage(t)}> {t} </span>)}... <span onClick={() => props.setPage(pagesCount)}>{pagesCount}</span></div>
         </div>
 
     </>

@@ -1,8 +1,7 @@
 import {FormEvent, useEffect, useState} from "react";
-import {addPackTC, getPacksTC, setPackNameForSearch} from "./packsReducer";
+import {addPackTC, getPacksTC, setPackNameForSearch, setPageForPagination} from "./packsReducer";
 import {Packs} from "./packs";
 import {useDispatch} from "react-redux";
-import {LoginTC} from "../../../n1-main/m2-bll/authReducer";
 
 
 export const PacksContainer = () => {
@@ -16,16 +15,21 @@ export const PacksContainer = () => {
         setName('');
 
     }
+
+    const setPage = (page: number) => {
+        dispatch(setPageForPagination(page))
+        dispatch(getPacksTC())
+    }
     useEffect(() => {
-            setTimeout(() => {
-                dispatch(setPackNameForSearch(packName))
-                dispatch(getPacksTC())
-            }, 500)
-        }
-        , [packName])
+        setTimeout(() => {
+            dispatch(setPackNameForSearch(packName))
+            dispatch(getPacksTC())
+        }, 200)
+    }, [packName])
+
     useEffect(() => {
         dispatch(getPacksTC())
     }, [])
 
-    return <Packs setName={setName} name={name} addPack={addPack} packName={packName} setPackName={setPackName}/>
+    return <Packs setName={setName} name={name} addPack={addPack} packName={packName} setPackName={setPackName} setPage={setPage}/>
 }
