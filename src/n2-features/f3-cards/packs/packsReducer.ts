@@ -10,7 +10,7 @@ export let initialState: PacksType = {
     cardPacksTotalCount: 0,
     maxCardsCount: 0,
     minCardsCount: 0,
-    page: 0,
+    page: 1,
     pageCount: 0,
     packName: ''
 
@@ -40,7 +40,15 @@ export const packsReducer = (state: PacksType = initialState, action: ActionsTyp
 }
 export const setPacks = (data: PacksTypeResponse) => {
     const {cardPacks, cardPacksTotalCount, maxCardsCount, minCardsCount, page, pageCount} = data
-    return ({type: 'packs/SET-PACKS', cardPacks, cardPacksTotalCount, maxCardsCount, minCardsCount, page, pageCount} as const)
+    return ({
+        type: 'packs/SET-PACKS',
+        cardPacks,
+        cardPacksTotalCount,
+        maxCardsCount,
+        minCardsCount,
+        page,
+        pageCount
+    } as const)
 }
 
 export const setPackNameForSearch = (packName: string) => {
@@ -56,20 +64,21 @@ export type SetPageForPaginationType = ReturnType<typeof setPageForPagination>
 type ActionsType = SetPacksType | SetPackNameForSearchType | SetPageForPaginationType
 
 export const getPacksTC = () => {
-    return(dispatch: Dispatch<ActionsType>, getState: () => AppStoreType) => {
+    return (dispatch: Dispatch<ActionsType>, getState: () => AppStoreType) => {
         const state = getState()
         let packName = state.packs.packName
         let page = state.packs.page
-    packsAPI.getCards(packName, page).then(res => {
-        dispatch(setPacks(res.data))
-    })
-}
+        packsAPI.getCards(packName, page).then(res => {
+            dispatch(setPacks(res.data))
+        })
+    }
 }
 
 export const addPackTC = (name: string) => {
     return (dispatch: Dispatch<any>, getState: () => AppStoreType) => {
-        packsAPI.postCards(name).then((res) =>
-        {dispatch(getPacksTC())})
+        packsAPI.postCards(name).then((res) => {
+            dispatch(getPacksTC())
+        })
             .catch(e => {
                     e.response ? dispatch(setIsError(e.response.data.error))
                         : dispatch(setIsError(e.message + ', more details in the console'));
@@ -87,9 +96,9 @@ export type CardsType = {
     grade: number
     shots: number
     rating: number
-    type:  string
-    created:  string
-    updated:  string
+    type: string
+    created: string
+    updated: string
     __v: number
 }
 

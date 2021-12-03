@@ -1,0 +1,33 @@
+@import '../../../n1-main/m1-ui/common/components/sass/variables';
+
+
+.body {
+  margin: 30px auto;
+  border: 2px solid $primaryColor;
+  width: 50%;
+  min-height: 200px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 10px 10px 0 10px;
+
+
+  span {
+    margin: 20px;
+    font-size: 20px;
+    font-weight: bold;
+  }
+  .grade {
+    padding: 40px 0 20px 0;
+    .gradeBtn {
+      width: 60px;
+      height: 40px;
+      margin: 10px;
+    }
+  }
+
+  .btn {
+    padding-bottom: 30px;
+  }
+}
+

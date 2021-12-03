@@ -49,7 +49,6 @@ const {cardPacks, cardPacksTotalCount, maxCardsCount, minCardsCount, page, pageC
         }
     }
     let pagesCount = Math.ceil(cardPacksTotalCount / pageCount)
-debugger
     const changeName = (e: ChangeEvent<HTMLInputElement>) => {
     props.setName(e.currentTarget.value)
     }

@@ -13,7 +13,7 @@ export const App = () => {
     }, [])
     return (
         <div className="App">
-            {isInitialize && <Main />}
+            {isInitialize && <Main/>}
         </div>
     );
 }

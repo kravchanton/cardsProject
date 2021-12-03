@@ -5,7 +5,9 @@ import {registrationReducer} from "./registrationReducer";
 import {recoveryReducer} from "./recovery-reducer";
 import {authReducer} from "./authReducer";
 import {profileReducer} from "./profileReducer";
-import {packsReducer} from "../../n2-features/f3-cards/packs/packsReducer";
+import {cardsPackReducer} from "./cardsPack-reducer";
+import {cardsReducer} from "./cards-reducer";
+import {modalReducer} from "./modal-reducer";
 
 const reducers = combineReducers({
     testReducer: testReducer,
@@ -13,8 +15,9 @@ const reducers = combineReducers({
     recoveryPassword: recoveryReducer,
     auth: authReducer,
     profile: profileReducer,
-    packs: packsReducer
-
+    table: cardsPackReducer,
+    cards: cardsReducer,
+    modal: modalReducer,
 })
 
 export const store = createStore(reducers, applyMiddleware(thunkMiddleware))

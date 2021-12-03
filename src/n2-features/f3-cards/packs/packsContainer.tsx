@@ -23,13 +23,12 @@ export const PacksContainer = () => {
     useEffect(() => {
         setTimeout(() => {
             dispatch(setPackNameForSearch(packName))
+            dispatch(setPageForPagination(1))
             dispatch(getPacksTC())
-        }, 200)
+        }, 0)
     }, [packName])
 
-    useEffect(() => {
-        dispatch(getPacksTC())
-    }, [])
+
 
     return <Packs setName={setName} name={name} addPack={addPack} packName={packName} setPackName={setPackName} setPage={setPage}/>
 }
